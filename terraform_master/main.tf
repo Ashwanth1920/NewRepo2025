@@ -81,3 +81,78 @@ resource "aws_s3_bucket" "new" {
 
         :wq
         
+
+        variable "enable_monitoring" {
+    description = " enable monitoring"
+    type= bool
+    default = false
+}
+
+resource "aws_instance" "example" {
+    ami = "ami-12345"
+    instance_type = "t2.micro"
+    monitoring = var.enable_monitoring
+}
+
+variable "bucket_names" {
+type = list(string)
+default = ["bucketlist111", "bucketlist222", "bucketlist333", "bucketlist444" ]
+}
+
+vi
+
+resource "aws_s3_bucket" "listing" {
+  
+  
+}
+
+resource "aws_s3_bucket" "listing" {
+  for_each = toset(var.bucket_names)  # Convert list to a set for iteration
+
+  bucket = each.value
+}
+
+
+
+variable "amiid" {
+type = map(string)
+default = {
+    us-east-1 = "ami-123456"
+    us-west-1 = "ami-789456"
+}
+
+}default = "t2.micro"
+
+E
+
+resources "aws_instance" "new"{
+    ami = "ami-123456"
+    count = 2
+    instance_type = "t2.micro"
+    name = server (count.index)
+}
+
+
+terraform {
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "~> 5.0"
+    }
+  }
+}
+
+
+
+resource "aws_instance" "new" {
+  ami           = "ami-123456"  # Replace with a valid AMI ID
+  count         = 2
+  instance_type = "t2.micro"
+
+  tags = {
+    Name = "server-${count.index}"
+  }
+}
+
+
+vi "rajuuu" aws_subnet.main.id
